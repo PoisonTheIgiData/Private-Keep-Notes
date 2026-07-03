@@ -14,77 +14,55 @@ Keepnotes/
  ├── Reminders/  
  └── labels.json  
    
-Each note is its own folder (My Title__ab12cd34/note.json, plus an  
-   
- images/ folder if it has attachments). Nothing is hidden in a database —  
-   
- you can back up, sync, or grep your notes like any other files.  
+Each note is its own folder (My Title__ab12cd34/note.json, plus an images/ folder if it has attachments). 
+Nothing is hidden in a database and you can back up, sync, or grep your notes like any other files.  
+(There's an instant autosave after an edit)
+
 **Running it**  
 python3 p1.py  
    
-That's it — no pip install required for the basic server. It opens a  
-   
- native desktop window if PyQt5 or pywebview is installed, otherwise it opens  
-   
- your default browser. Either way it's serving at http://<your-ip>:7743  
-   
- (or the next free port up to 7842) for other devices on your network —  
-   
- handy for using it over Tailscale from your phone.  
+That's it, no pip install required for the basic server. It opens a native desktop window if PyQt5 or pywebview is installed, 
+otherwise it opens your default browser. 
+Either way it's serving at http://<your-ip>:7743   
+(or the next free port up to 7842) for other devices on your network and its handy for using it over Tailscale from your phone.  
 Flags:  
-- --headless — run as a server only, no window (for a NAS, a Pi, a  
-   
- background service, etc.)  
+- --headless — run as a server only, no window (for a NAS, a Pi, a background service, etc.)  
+
+
+
 **Features**  
 - **Text and checklist notes**, pinned, colored, labeled  
 - **Reminders** — click 🔔, type a date/time, or leave it blank to clear one  
-- **Images** — drag-and-drop, paste, or browse; stored as real files inside  
-   
- each note's folder  
-- **Archive and Trash** — trashed notes auto-purge after 7 days; archiving  
-   
- or restoring shows a confirmation snackbar with an undo-style action  
-- **Expanded editor** — click any note to open it full-size; trashed notes  
-   
- open as a read-only preview with Restore (asks for confirmation) and  
+- **Images** — drag-and-drop, paste, or browse; stored as real files inside each note's folder  
+- **Archive and Trash** — trashed notes auto-purge after 7 days; archiving or restoring shows a confirmation snackbar with an undo-style action  
+- **Expanded editor** — click any note to open it full-size; trashed notes  open as a read-only preview with Restore (asks for confirmation) and  
    
  Delete forever  
-- **Live word/character counts** while writing  
-- **Saving… / Saved indicator** in the header so you always know your edit  
-   
- landed  
-- **Real-time sync** across tabs/devices over Server-Sent Events — edits  
-   
- from your phone show up on your desktop without a refresh  
+- **Live word/character counts** while writing.  
+- **Saving… / Saved indicator** in the header so you always know your edit landed.
+-**Real-time sync** across tabs/devices over Server-Sent Events — edits from your phone show up on your desktop without a refresh. 
 - **Search, drag-to-reorder, light/dark note colors**  
-- **Server ON/OFF toggle** (desktop mode only) — turn OFF to stop serving  
+
+  **IMORTANT! SECURITY FEATURES**
+- **Server ON/OFF toggle**
+(desktop mode only) — turn OFF to stop serving to your network while keeping the app usable locally; turn back ON from thesame window.
+This is done so that someone with access from your network cant just turn your server off 
    
- to your network while keeping the app usable locally; turn back ON from  
-   
- the same window  
-**Security**  
-Off by default, since this is meant for a trusted personal or Tailscale  
-   
- network:  
-- **No password** unless you set one. Open p1.py and change:  
-- PASSWORD = None          # set to a string, e.g. "correct horse battery staple"  
-   
--   
- With a password set, other devices get a login page and a cookie  
-   
- session; this machine (127.0.0.1) always bypasses it, so you can never  
-   
- lock yourself out of your own desktop window.  
-- **CSRF and DNS-rebinding protection** are always on, regardless of the  
-   
- password: requests with an unrecognized Host header or a cross-site  
- Origin are rejected outright.  
-- **Request bodies are capped** at 64 MB (images travel as base64, so this  
-   
- is generous but not unlimited).  
-- All ids, filenames, and image data are validated server-side before  
-   
- they're written to disk or sent back to a browser.  
+    network:  
+    - **No password** since this is meant for a trusted personal or Tailscale unless you set one. 
+      To set one you need to Open p1.py and change:  
+      PASSWORD = None          # set to a string, e.g. "correct horse battery staple"  
+      With a password set, other devices get a login page and a cookie session; this machine (127.0.0.1) always bypasses it, so you can never lock              yourself out of your own desktop window.  
+
+    - **CSRF and DNS-rebinding protection** are always on, regardless of the   
+      password: requests with an unrecognized Host header or a cross-site Origin are rejected outright.  
+
+    - **Request bodies are capped** at 64 MB (images travel as base64, so this is generous but not unlimited).  
+    - All ids, filenames, and image data are validated server-side before they're written to disk or sent back to a browser.  
+
+
+
+
 **Building a double-clickable app**  
 build.py uses [PyInstaller to package the app  
    
@@ -93,10 +71,10 @@ python3 build.py
    
 | | |  
 |-|-|  
-| **Platform** | **Result** |   
-| Windows | dist\IgiNotes.exe |   
-| macOS | dist/IgiNotes.app |   
-| Linux | dist/IgiNotes + a dist/IgiNotes.desktop launcher |   
+| **Platform** | **Result**                                       |   
+| Windows      | dist\IgiNotes.exe                                |   
+| macOS        | dist/IgiNotes.app                                |   
+| Linux        | dist/IgiNotes + a dist/IgiNotes.desktop launcher |   
    
 Notes on this:  
 - **Run it on each OS you want a build for** — PyInstaller can't  
